@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardare.Servo;
 
 /*
  * This file contains an example of a Linear "OpMode".
@@ -69,11 +70,18 @@ public class OmniWheels extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
+    // Drive
     private DcMotor leftFrontDrive = null;
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-
+    // Linear Actuators
+    private DcMotor LinearAccMidleft = null;
+    private DcMotor LinearAccMidright = null;
+    // Arm
+    private Servo ArmShoulderServo = null;
+    private Servo ArmWristServo = null;
+    
     @Override
     public void runOpMode() {
 
@@ -83,6 +91,10 @@ public class OmniWheels extends LinearOpMode {
         leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
+        LinearAccMidleft = hardwareMap.get(DcMotor.class, "");
+        LinearAccMidright = hardwareMap.get(DcMotor.class, "");
+        ArmShoulderServo = hardwareMap.get(Servo.class, "");
+        ArmWristServo = hardwareMap.get(Servo.class, "");
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!

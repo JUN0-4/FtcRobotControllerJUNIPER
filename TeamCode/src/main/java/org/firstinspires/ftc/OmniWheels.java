@@ -65,7 +65,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
 @Disabled
-public class BasicOmniOpMode_Linear extends LinearOpMode {
+public class OmniWheels extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -100,7 +100,7 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses START)
-        telemetry.addData("Status", "Initialized");
+        telemetry.addData("High Five!", "WE ROBOT-ED!!");
         telemetry.update();
 
         waitForStart();
@@ -112,8 +112,8 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-            double lateral =  gamepad1.left_stick_x;
-            double yaw     =  gamepad1.right_stick_x;
+            double lateral =  gamepad1.right_stick_x; // < strafing
+            double yaw     =  gamepad1.left_stick_x; // < rotating
 
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
@@ -128,7 +128,7 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
 
-            if (max > 1.0) {
+            if (max > 1.0) { // defines input > 1.0 as 1.0, scales others to match
                 leftFrontPower  /= max;
                 rightFrontPower /= max;
                 leftBackPower   /= max;

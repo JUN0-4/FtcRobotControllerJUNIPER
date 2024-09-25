@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.hardare.Servo;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /*
  * This file contains an example of a Linear "OpMode".
@@ -64,9 +64,9 @@ import com.qualcomm.robotcore.hardare.Servo;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
+@TeleOp(name="JunoOmniWheels 0.1", group="Linear OpMode")
 @Disabled
-public class OmniWheels extends LinearOpMode {
+public class OmniWheelsJuno extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -76,11 +76,11 @@ public class OmniWheels extends LinearOpMode {
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
     // Linear Actuators
-    private DcMotor LinearAccMidleft = null;
-    private DcMotor LinearAccMidright = null;
+    private DcMotor linearAccMidleft = null;
+    private DcMotor linearAccMidright = null;
     // Arm
-    private Servo ArmShoulderServo = null;
-    private Servo ArmWristServo = null;
+    private Servo armShoulderServo = null;
+    private Servo armWristServo = null;
     
     @Override
     public void runOpMode() {
@@ -91,10 +91,12 @@ public class OmniWheels extends LinearOpMode {
         leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-        LinearAccMidleft = hardwareMap.get(DcMotor.class, "");
-        LinearAccMidright = hardwareMap.get(DcMotor.class, "");
-        ArmShoulderServo = hardwareMap.get(Servo.class, "");
-        ArmWristServo = hardwareMap.get(Servo.class, "");
+        
+        linearAccMidleft = hardwareMap.get(DcMotor.class, "midleft_linear_acc");
+        linearAccMidright = hardwareMap.get(DcMotor.class, "midright_linear_acc");
+        
+        armShoulderServo = hardwareMap.get(Servo.class, "arm_shoulder");
+        armWristServo = hardwareMap.get(Servo.class, "arm_wrist");
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -127,6 +129,13 @@ public class OmniWheels extends LinearOpMode {
             double lateral =  gamepad1.right_stick_x; // < strafing
             double yaw     =  gamepad1.left_stick_x; // < rotating
 
+            
+            static final double INCREMENT = 0.01;
+            static final int CYCLE_MS = 50;
+            static final double MAX_POS = 1.0;
+            static final double MIN_POS = 0.0;
+                
+            
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
             double leftFrontPower  = axial + lateral + yaw;

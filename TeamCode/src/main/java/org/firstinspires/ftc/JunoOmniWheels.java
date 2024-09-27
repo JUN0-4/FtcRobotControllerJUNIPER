@@ -76,8 +76,8 @@ public class OmniWheelsJuno extends LinearOpMode {
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
     // Linear Actuators
-    private DcMotor linearAccMidleft = null;
-    private DcMotor linearAccMidright = null;
+    private DcMotor linearActMidleft = null;
+    private DcMotor linearActMidright = null;
     // Arm
     private Servo armShoulderServo = null;
     private Servo armWristServo = null;
@@ -87,16 +87,16 @@ public class OmniWheelsJuno extends LinearOpMode {
 
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
-        leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
+        leftFrontDrive    = hardwareMap.get(DcMotor.class, "left_front_drive");
+        leftBackDrive     = hardwareMap.get(DcMotor.class, "left_back_drive");
+        rightFrontDrive   = hardwareMap.get(DcMotor.class, "right_front_drive");
+        rightBackDrive    = hardwareMap.get(DcMotor.class, "right_back_drive");
         
-        linearAccMidleft = hardwareMap.get(DcMotor.class, "midleft_linear_acc");
-        linearAccMidright = hardwareMap.get(DcMotor.class, "midright_linear_acc");
+        linearActMidleft  = hardwareMap.get(DcMotor.class, "midleft_linear_act");
+        linearActMidright = hardwareMap.get(DcMotor.class, "midright_linear_act");
         
-        armShoulderServo = hardwareMap.get(Servo.class, "arm_shoulder");
-        armWristServo = hardwareMap.get(Servo.class, "arm_wrist");
+        armShoulderServo  = hardwareMap.get(Servo.class, "arm_shoulder");
+        armWristServo     = hardwareMap.get(Servo.class, "arm_wrist");
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -125,23 +125,27 @@ public class OmniWheelsJuno extends LinearOpMode {
             double max;
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
-            double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-            double lateral =  gamepad1.right_stick_x; // < strafing
-            double yaw     =  gamepad1.left_stick_x; // < rotating
+            double axial            = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+            double lateral          =  gamepad1.right_stick_x; // < strafing
+            double yaw              =  gamepad1.left_stick_x; // < rotating
 
+            boolean raiseActuators  = gamepad2.right_bumper;
+            boolean lowerActuators  = gamepad2.left_bumper;
+            boolean openHand        = gamepad2.right_trigger > 0.5;
+            boolean closehand       = gamepad2.left_trigger > 0.5;
+            double moveShoulder      = gamepad2.right_stick_y;
             
             static final double INCREMENT = 0.01;
             static final int CYCLE_MS = 50;
             static final double MAX_POS = 1.0;
             static final double MIN_POS = 0.0;
-                
-            
+    
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
-            double leftFrontPower  = axial + lateral + yaw;
-            double rightFrontPower = axial - lateral - yaw;
-            double leftBackPower   = axial - lateral + yaw;
-            double rightBackPower  = axial + lateral - yaw;
+            double leftFrontPower   = axial + lateral + yaw;
+            double rightFrontPower  = axial - lateral - yaw;
+            double leftBackPower    = axial - lateral + yaw;
+            double rightBackPower   = axial + lateral - yaw;
 
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
@@ -156,6 +160,28 @@ public class OmniWheelsJuno extends LinearOpMode {
                 rightBackPower  /= max;
             }
 
+
+            if (raiseActuators == true){
+                linearActMidright.setPosition(1.0);
+                linearActMidleft.setPosition(1.0);
+            } else if (lowerActuators == true){
+                linearActMidright.setPosition(0);
+                linearActMidleft.setPosition(0);
+            }
+
+
+            if (openHand == true){
+                armWristServo.setPosition(1.0);
+            } else if (closeHand == true){
+                armWristServo.setPosition(0);
+            }
+
+            
+            armShoulderServo.setPosition(armShoulderServo.getPosition()+(0.01*(moveShoulder/Math.abs(moveShoulder))));
+            
+
+
+            
             // This is test code:
             //
             // Uncomment the following code to test your motor directions.

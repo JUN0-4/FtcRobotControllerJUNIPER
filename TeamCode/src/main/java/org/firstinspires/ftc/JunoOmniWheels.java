@@ -35,6 +35,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
+import java.util.List;
+import java.util.ArrayList;
 
 /*
  * This file contains an example of a Linear "OpMode".
@@ -71,16 +73,21 @@ public class OmniWheelsJuno extends LinearOpMode {
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
     // Drive
-    private DcMotor leftFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor rightBackDrive = null;
+    private DcMotor    leftFrontDrive = null;
+    private DcMotor     leftBackDrive = null;
+    private DcMotor   rightFrontDrive = null;
+    private DcMotor    rightBackDrive = null;
     // Linear Actuators
-    private DcMotor linearActMidleft = null;
+    private DcMotor  linearActMidleft = null;
     private DcMotor linearActMidright = null;
     // Arm
-    private Servo armShoulderServo = null;
-    private Servo armWristServo = null;
+    private Servo    armShoulderServo = null;
+    private Servo       armWristServo = null;
+
+
+    List<DcMotor> allMotors = new ArrayList<>();
+    List<Servo>   allServos = new ArrayList<>();
+    
     
     @Override
     public void runOpMode() {
@@ -94,9 +101,23 @@ public class OmniWheelsJuno extends LinearOpMode {
         
         linearActMidleft  = hardwareMap.get(DcMotor.class, "midleft_linear_act");
         linearActMidright = hardwareMap.get(DcMotor.class, "midright_linear_act");
+
+        // yoiu need to coed the actuators as motors oiuhg
+        allMotors.add(leftFrontDrive);
+        allMotors.add(rightFrontDrive);
+        allMotors.add(leftBackDrive);
+        allMotors.add(rightBackDrive);
+        allMotors.add(linearActMidleft);
+        allMotors.add(linearActMidright);
         
         armShoulderServo  = hardwareMap.get(Servo.class, "arm_shoulder");
         armWristServo     = hardwareMap.get(Servo.class, "arm_wrist");
+        
+
+        allServos.add(armShoulderServo);
+        allServos.add(armWristServo);
+
+        
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -133,7 +154,13 @@ public class OmniWheelsJuno extends LinearOpMode {
             boolean lowerActuators  = gamepad2.left_bumper;
             boolean openHand        = gamepad2.right_trigger > 0.5;
             boolean closehand       = gamepad2.left_trigger > 0.5;
-            double moveShoulder      = gamepad2.right_stick_y;
+            double moveShoulder     = gamepad2.right_stick_y;
+
+
+            telemetry.addData ("Axial", axial);
+            telemetry.addData ("Lateral", lateral);
+            telemetry.addData ("Yaw", yaw);
+            
             
             static final double INCREMENT = 0.01;
             static final int CYCLE_MS = 50;
@@ -206,9 +233,20 @@ public class OmniWheelsJuno extends LinearOpMode {
             rightBackDrive.setPower(rightBackPower);
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
-            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            // telemetry.addData("Status", "Run Time: " + runtime.toString());
+            // telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
+            // telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+           
+            for (DcMotor thisMotor in allMotors) {
+                telemetry.addData("MotorSpeed", thisMotor.getSpeed());
+
+            }
+
+            for (Servo thisServo in allServos) {
+                telemetry.addData("ServoPosition", thisServo.getPosition());
+                
+            }
+            
             telemetry.update();
         }
     }}

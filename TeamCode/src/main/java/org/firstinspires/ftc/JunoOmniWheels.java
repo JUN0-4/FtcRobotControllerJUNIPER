@@ -162,10 +162,10 @@ public class OmniWheelsJuno extends LinearOpMode {
             telemetry.addData ("Yaw", yaw);
             
             
-            static final double INCREMENT = 0.01;
-            static final int CYCLE_MS = 50;
-            static final double MAX_POS = 1.0;
-            static final double MIN_POS = 0.0;
+            final double INCREMENT = 0.01;
+            final int CYCLE_MS = 50;
+            final double MAX_POS = 1.0;
+            final double MIN_POS = 0.0;
     
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.

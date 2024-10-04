@@ -237,12 +237,12 @@ public class OmniWheelsJuno extends LinearOpMode {
             // telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             // telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
            
-            for (DcMotor thisMotor in allMotors) {
+            for (DcMotor thisMotor : allMotors) {
                 telemetry.addData("MotorSpeed", thisMotor.getSpeed());
 
             }
 
-            for (Servo thisServo in allServos) {
+            for (Servo thisServo : allServos) {
                 telemetry.addData("ServoPosition", thisServo.getPosition());
                 
             }

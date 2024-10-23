@@ -68,7 +68,7 @@ import java.util.ArrayList;
 
 @TeleOp(name="JunoOmniWheels 0.1", group="Linear OpMode")
 @Disabled
-public class OmniWheelsJuno extends LinearOpMode {
+public class JunoOmniWheels extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -153,7 +153,7 @@ public class OmniWheelsJuno extends LinearOpMode {
             boolean raiseActuators  = gamepad2.right_bumper;
             boolean lowerActuators  = gamepad2.left_bumper;
             boolean openHand        = gamepad2.right_trigger > 0.5;
-            boolean closehand       = gamepad2.left_trigger > 0.5;
+            boolean closeHand       = gamepad2.left_trigger > 0.5;
             double moveShoulder     = gamepad2.right_stick_y;
 
 
@@ -189,11 +189,14 @@ public class OmniWheelsJuno extends LinearOpMode {
 
 
             if (raiseActuators == true){
-                linearActMidright.setPosition(1.0);
-                linearActMidleft.setPosition(1.0);
+                linearActMidright.setPower(1.0);
+                linearActMidleft.setPower(1.0);
             } else if (lowerActuators == true){
-                linearActMidright.setPosition(0);
-                linearActMidleft.setPosition(0);
+                linearActMidright.setPower(-1.0);
+                linearActMidleft.setPower(-1.0);
+            } else {
+                linearActMidright.setPower(0.0);
+                linearActMidleft.setPower(0.0);
             }
 
 
@@ -238,7 +241,7 @@ public class OmniWheelsJuno extends LinearOpMode {
             // telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
            
             for (DcMotor thisMotor : allMotors) {
-                telemetry.addData("MotorSpeed", thisMotor.getSpeed());
+                telemetry.addData("MotorSpeed", thisMotor.getPower());
 
             }
 

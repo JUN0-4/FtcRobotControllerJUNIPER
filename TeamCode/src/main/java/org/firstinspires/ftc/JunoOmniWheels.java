@@ -67,7 +67,6 @@ import java.util.ArrayList;
  */
 
 @TeleOp(name="JunoOmniWheels 0.1", group="Linear OpMode")
-@Disabled
 public class JunoOmniWheels extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
@@ -154,7 +153,8 @@ public class JunoOmniWheels extends LinearOpMode {
             boolean lowerActuators  = gamepad2.left_bumper;
             boolean openHand        = gamepad2.right_trigger > 0.5;
             boolean closeHand       = gamepad2.left_trigger > 0.5;
-            double moveShoulder     = gamepad2.right_stick_y;
+            double moveShoulderPos     = gamepad2.right_stick_y;
+            double moveShoulderNeg     = gamepad2.right_stick_y;
 
 
             telemetry.addData ("Axial", axial);
@@ -206,10 +206,18 @@ public class JunoOmniWheels extends LinearOpMode {
                 armWristServo.setPosition(0);
             }
 
-            
-            armShoulderServo.setPosition(armShoulderServo.getPosition()+(0.01*(moveShoulder/Math.abs(moveShoulder))));
-            
 
+
+            // not done :P
+
+            
+            if (moveShoulderPos == true){
+                armShoulderServo.setPosition(armShoulderServo.getPosition()+(0.01*(moveShoulderPos/Math.abs(moveShoulderPos))));
+            } else if (moveShoulderNeg == true){
+                armShoulderServo.setPosition(armShoulderServo.getPosition()+(0.01*(moveShoulderNeg/Math.abs(moveShoulderNeg))));
+            } else {
+                armShoulderServo.setPosition(armShoulderServo.getPosition()+(0.00*(moveShoulderPos/Math.abs(moveShoulderPos))));
+                armShoulderServo.setPosition(armShoulderServo.getPosition()+(0.00*(moveShoulderNeg/Math.abs(moveShoulderNeg))));
 
             
             // This is test code:

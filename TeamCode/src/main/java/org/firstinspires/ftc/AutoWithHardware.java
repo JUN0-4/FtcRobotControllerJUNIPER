@@ -100,8 +100,42 @@ public class AutoWithHardware extends LinearOpMode {
 
 
             
-            robot.driveRobot();
-            //bleh
+            robot.driveRobot(0.5,0,0.5);
+            sleep(Math.pi()*12*INCH_TO_TICK);
+            
+            robot.driveRobot(0,0,0);
+            sleep(100);
+            
+            robot.driveRobot(0.5,0,-0.5);
+            sleep(Math.pi()*6*INCH_TO_TICK);
+            
+            robot.driveRobot(0,0,0);
+            sleep(100);
+            
+            robot.driveRobot(1,0,0);
+            sleep(12*INCH_TO_TICK);
+            
+            robot.driveRobot(0,0,0);
+            sleep(100);
+            
+            robot.driveRobot(0.5,0,1);
+            sleep(Math.pi()*12*INCH_TO_TICK);
+            
+            robot.driveRobot(0,0,0);
+            sleep(100);
+            
+            robot.driveRobot(1,0,0);
+            sleep(36*INCH_TO_TICK);
+            
+            robot.driveRobot(0,0,0);
+            sleep(100);
+            
+            robot.driveRobot(0,1,0);
+            sleep(Math.pi()*6*INCH_TO_TICK);
+            
+            robot.driveRobot(0,0,0);
+            sleep(100);
+            
 
             
       
